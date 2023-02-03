@@ -1,0 +1,8 @@
+Ejercicio 1: db.users.find({name:{$regex: /^Mar/}})
+Ejercicio 2: db.users.find({$and: [{name:{ $regex: /^M/}}, {last_name: { $regex: /^L/}}]}).limit(2)
+Ejercicio 3: db.users.find({$and: [{name:{$regex:/^[a-m][r]/i}}, {last_name: {$regex:/^[a-c]/i}}]})
+Ejercicio 4:
+db.users.find( {city:{$regex: /^Ma/}}, {nat:{$eq:'FR'}}, {_id:0, email: {$concat: [{$toLower:"$name"},'.',{$toLower:"$last_name"},"@example.com"]}});
+db.users.aggregate([{$match: {city:{$regex: /^Ma/}, nat:{$eq:'FR'}}, {$project: {_id:0, email: {$concat: [{$toLower:"$name"},".",{$toLower:"$last_name"},"@example.com"]}}]);
+Ejercicio 5:
+db.peliculas.find({titulo:{$regex: /^[a-m]/i}}, {fecha_estreno: {$gte:ISODate{'1980-01-10'}}}, {fecha_estreno: {$lte:ISODate{'1990-01-10'}}})

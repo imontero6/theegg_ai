@@ -1,0 +1,149 @@
+Ejercicio 1:
+db.createCollection("comentario", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         title: "Comentario Object Validation",
+         required: [
+            "fecha_comentario",
+            "mensaje_comentario",
+            "num_likes",
+            ],
+         properties: {
+            fecha_comentario: {
+               bsonType: "date",
+               description: "'fecha_comentario' must be a date and is required"
+            },
+            mensaje_comentario: {
+               bsonType: "string",
+               description: "'mensaje_comentario' must be a string and is required"
+            },
+            num_likes: {
+               bsonType: "int",
+               description: "'num_likes' must be a int and is required"
+            }
+         }
+      }
+   }
+} );
+
+Ejercicio 2:
+db.createCollection("post", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         title: "Post Object Validation",
+         required: [ 
+            "titulo",
+            "contenido",
+            "fecha_creacion",
+            "tiempo_lectura_estimado",
+            "num_likes",
+            "num_shares",
+            "num_comments",
+            "tags"
+		],
+         properties: {
+            titulo: {
+               bsonType: "string",
+               description: "'titulo' must be a string and is required"
+            },
+            contenido: {
+               bsonType: "string",
+               description: "'titulo' must be a string and is required"
+            },
+            fecha_creacion: {
+               bsonType: "date",
+               description: "'fecha_creacion' must be a date and is required"
+            },
+            tiempo_lectura_estimado: {
+               bsonType: "double",
+               description: "'tiepmo_lectura_estimado' must be a double and is required"
+            },
+            num_likes: {
+               bsonType: "int",
+               description: "'num_likes' must be a int and is required"
+            },
+            num_shares: {
+               bsonType: "int",
+               description: "'num_shares' must be a int and is required"
+            },
+            tags: {
+               bsonType: "array",
+               description: "'tags' must be a array, is required and must be one of these:tag1,tag2,tag3.",
+               minItems: 1,
+               uniqueItems: true,
+               items: {
+                        bsonType: "string",
+                        enum:["tag1","tag2","tag3"],
+                    }
+            }
+         }
+      }
+   }
+} );
+
+db.post.insertOne({
+    "titulo":"Definición atardecer",
+    "contenido":"Llegada de la última hora de la tarde, cuando disminuye la luz del sol.",
+    "fecha_creacion":new Date(),
+    "tiempo_lectura_estimado": 0.5,
+    "num_likes":100,
+    "num_shares":4,
+    "num_comments":1,
+    "tags":["tag1"]
+});
+
+Ejercicio 3:
+db.comentario.insertOne({
+    "fecha_comentario":"Hoy",
+    "mensaje_comentario":"¡Qué bonito!",
+    "num_likes":2
+});
+
+Ejercicio 4:
+db.post.insertMany([{
+    "titulo":"Sol",
+    "contenido":"El Sol (del latín sol, solis, ‘dios Sol invictus’ o ‘sol’, a su vez de la raíz protoindoeuropea sauel-, ‘brillar’)4​ es una estrella de tipo-G de la secuencia principal y clase de luminosidad V que se encuentra en el centro del sistema solar y constituye la mayor fuente de radiación electromagnética de este sistema planetario.5​ Es una esfera casi perfecta de plasma, con un movimiento convectivo interno que genera un campo magnético a través de un proceso de dinamo. Cerca de tres cuartas partes de la masa del Sol constan de hidrógeno; el resto es principalmente helio, con cantidades mucho más pequeñas de elementos, incluyendo el oxígeno, carbono, neón e hierro.",
+    "fecha_creacion":new Date(),
+    "tiempo_lectura_estimado": 1.5,
+    "num_likes":42,
+    "num_shares":5,
+    "num_comments":1,
+    "tags":['tag1','tag2']
+
+},
+{
+    "titulo":"Luna",
+    "contenido":"La Luna es el único satélite natural de la Tierra. Con un diámetro ecuatorial de 3474.8 km, es el quinto satélite más grande del sistema solar, mientras que en cuanto al tamaño proporcional respecto a su planeta es el satélite más grande: un cuarto del diámetro de la Tierra y 1/81 de su masa. Es, además, después de Ío, el segundo satélite más denso. Se encuentra en relación síncrona con la Tierra, siempre mostrando la misma cara hacia el planeta. El hemisferio visible está marcado con oscuros mares lunares de origen volcánico entre las brillantes montañas antiguas y los destacados astroblemas.",
+    "fecha_creacion":new Date(),
+    "tiempo_lectura_estimado": 1.5,
+    "num_likes":55,
+    "num_shares":2,
+    "num_comments":0,
+    "tags":['tag3','tag2']
+
+}])
+db.comentario.insertMany([{
+    "id_post":"63dbce55c65c2c1225e415f5",
+    "fecha_comentario":new Date(),
+    "mensaje_comentario": "¡Qué interesante!",
+    "num_likes":2
+},
+{
+    "id_post":"63db6369fa068d202bd91c80",
+    "fecha_comentario":new Date(),
+    "mensaje_comentario": "¡Me encanta!",
+    "num_likes":1
+}]);
+
+Ejercicio 5:
+db.usuarix.updateOne(
+  { nombre:'Miriam' },
+  { $set: { activx: false } }
+);
+
+Ejercicio 6:
+db.usuarix.updateMany( 
+    {rol:{$exists:true}}, 
+    { $set: { rol: ["lector"] } } );
